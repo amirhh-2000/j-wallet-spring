@@ -29,4 +29,9 @@ public class Transaction {
         this.category = category;
         this.createdAt = LocalDateTime.now();
     }
+
+    @PrePersist
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
