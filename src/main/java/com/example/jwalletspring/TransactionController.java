@@ -1,5 +1,7 @@
 package com.example.jwalletspring;
 
+import com.example.jwalletspring.dto.TransactionRequest;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,8 +21,8 @@ public class TransactionController {
     }
 
     @PostMapping
-    public Transaction create(@RequestBody Transaction transaction) {
-        return service.saveTransaction(transaction);
+    public Transaction create(@Valid @RequestBody TransactionRequest request) {
+        return service.saveTransaction(request);
     }
 
     @DeleteMapping("/{id}")

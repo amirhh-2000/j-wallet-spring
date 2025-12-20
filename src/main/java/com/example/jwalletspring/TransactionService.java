@@ -1,5 +1,6 @@
 package com.example.jwalletspring;
 
+import com.example.jwalletspring.dto.TransactionRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,12 @@ public class TransactionService {
         return repository.findAll();
     }
 
-    public Transaction saveTransaction(Transaction transaction) {
+    public Transaction saveTransaction(TransactionRequest request) {
+        Transaction transaction = new Transaction();
+        transaction.setType(request.getType());
+        transaction.setAmount(request.getAmount());
+        transaction.setCategory(request.getCategory());
+
         return repository.save(transaction);
     }
 
