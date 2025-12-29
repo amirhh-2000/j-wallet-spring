@@ -1,5 +1,7 @@
-package com.example.jwalletspring;
+package com.example.jwalletspring.service;
 
+import com.example.jwalletspring.Transaction;
+import com.example.jwalletspring.TransactionRepository;
 import com.example.jwalletspring.dto.TransactionRequest;
 import org.springframework.stereotype.Service;
 

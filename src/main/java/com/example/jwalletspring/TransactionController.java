@@ -1,6 +1,7 @@
 package com.example.jwalletspring;
 
 import com.example.jwalletspring.dto.TransactionRequest;
+import com.example.jwalletspring.service.TransactionService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
