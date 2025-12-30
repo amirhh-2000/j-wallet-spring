@@ -1,34 +1,29 @@
 package com.example.jwalletspring.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import tools.jackson.databind.JsonNode;
-import tools.jackson.databind.ObjectMapper;
 
 @Service
 public class BitcoinService {
-    private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper;
+    private final WebClient webClient;
 
-    public BitcoinService(RestTemplate restTemplate, ObjectMapper objectMapper) {
-        this.restTemplate = restTemplate;
-        this.objectMapper = objectMapper;
+    public BitcoinService(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.baseUrl("https://data-api.coindesk.com").build();
     }
 
     public String getCurrentPrice() {
-        String url = "https://data-api.coindesk.com/index/cc/v1/latest/tick?market=cadli&instruments=BTC-USD";
-
-        String jsonResponse = restTemplate.getForObject(url, String.class);
-
-        try {
-            JsonNode root = objectMapper.readTree(jsonResponse);
-            double price = root.path("Data")
-                    .path("BTC-USD")
-                    .path("VALUE")
-                    .asDouble();
-            return "Bitcoin price: $" + price;
-        } catch (Exception e) {
-            return "Error getting price: " + e.getMessage();
-        }
+        return webClient.get()
+                .uri("/index/cc/v1/latest/tick?market=cadli&instruments=BTC-USD")
+                .retrieve()
+                .bodyToMono(JsonNode.class)
+                .map(root -> {
+                    double price = root.path("Data")
+                            .path("BTC-USD")
+                            .path("VALUE")
+                            .asDouble();
+                    return "Bitcoin price: $" + price;
+                })
+                .block();
     }
 }
