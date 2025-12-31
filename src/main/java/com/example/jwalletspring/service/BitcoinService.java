@@ -12,17 +12,16 @@ public class BitcoinService {
         this.webClient = webClientBuilder.baseUrl("https://data-api.coindesk.com").build();
     }
 
-    public String getCurrentPrice() {
+    public Double getCurrentPrice() {
         return webClient.get()
                 .uri("/index/cc/v1/latest/tick?market=cadli&instruments=BTC-USD")
                 .retrieve()
                 .bodyToMono(JsonNode.class)
                 .map(root -> {
-                    double price = root.path("Data")
+                    return root.path("Data")
                             .path("BTC-USD")
                             .path("VALUE")
                             .asDouble();
-                    return "Bitcoin price: $" + price;
                 })
                 .block();
     }

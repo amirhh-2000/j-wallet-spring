@@ -1,5 +1,6 @@
 package com.example.jwalletspring;
 
+import com.example.jwalletspring.dto.BitcoinResponse;
 import com.example.jwalletspring.dto.TransactionRequest;
 import com.example.jwalletspring.service.BitcoinService;
 import com.example.jwalletspring.service.TransactionService;
@@ -7,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -22,8 +24,11 @@ public class TransactionController {
     }
 
     @GetMapping("/btc")
-    public String bitcoinPrice() {
-        return bitcoinService.getCurrentPrice();
+    public BitcoinResponse bitcoinPrice() {
+        return new BitcoinResponse(
+                bitcoinService.getCurrentPrice(),
+                LocalDateTime.now()
+        );
     }
 
     @PostMapping
