@@ -1,37 +1,33 @@
 package com.example.jwalletspring;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@ToString
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     private TransactionType type;
 
-    private double amount;
+    private Double amount;
     private String category;
     private LocalDateTime createdAt;
 
-    public Transaction(TransactionType type, double amount, String category) {
-        this.type = type;
-        this.amount = amount;
-        this.category = category;
-        this.createdAt = LocalDateTime.now();
-    }
-
     @PrePersist
     public void onCreate() {
-        this.createdAt = LocalDateTime.now();
+        if (this.createdAt == null) {
+            this.createdAt = LocalDateTime.now();
+        }
     }
 }

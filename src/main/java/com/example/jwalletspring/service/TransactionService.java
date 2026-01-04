@@ -20,12 +20,13 @@ public class TransactionService {
     }
 
     public Transaction saveTransaction(TransactionRequest request) {
-        Transaction transaction = new Transaction();
-        transaction.setType(request.getType());
-        transaction.setAmount(request.getAmount());
-        transaction.setCategory(request.getCategory());
+        Transaction t = Transaction.builder()
+                .amount(request.getAmount())
+                .type(request.getType())
+                .category(request.getCategory())
+                .build();
 
-        return repository.save(transaction);
+        return repository.save(t);
     }
 
     public void deleteTransaction(Long id) {
